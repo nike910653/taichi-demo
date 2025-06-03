@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <title>CSS 太極圖 - 自適應 RWD 版</title>
+  <style>
+    :root {
+        --size: clamp(150px, 40vmin, 400px);
+        --scale: 0.6;
+    }
+
+    body {
+        background: #f5f5f5;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        margin: 0;
+        padding: 1rem;
+        box-sizing: border-box;
+        gap: 1rem;
+    }
+
+    .taichi {
+        position: relative;
+        width: calc(var(--size) / 2);
+        height: var(--size);
+        border: solid black;
+        border-width: 6px calc(var(--size) / 2.0) 6px 6px; /* 微調右邊寬度防止橢圓 */
+        background: #fff;
+        border-radius: 50%;
+        max-width: 100%;
+        transform: scale(var(--scale));
+        transform-origin: center center;
+    }
+
+    .white-circle,
+    .black-circle {
+      position: absolute;
+      left: 100%;
+      width: calc(var(--size) / 2);
+      height: calc(var(--size) / 2);
+      border-radius: 50%;
+      transform: translateX(-50%);
+    }
+
+    .white-circle {
+      top: 0;
+      background: #fff;
+    }
+
+    .black-circle {
+      top: 50%;
+      background: #000;
+    }
+
+    .white-circle::after,
+    .black-circle::after {
+      content: "";
+      position: absolute;
+      top: 35%;
+      left: 35%;
+      width: calc(var(--size) / 6);
+      height: calc(var(--size) / 6);
+      border-radius: 50%;
+    }
+
+    .white-circle::after {
+      background: #000;
+    }
+
+    .black-circle::after {
+      background: #fff;
+    }
+
+    button {
+      padding: 0.5rem 1rem;
+      font-size: 1rem;
+      background: #333;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #555;
+    }
+
+    @media (max-width: 480px) {
+      body {
+        padding: 2rem 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="taichi" id="taichi">
+    <div class="white-circle"></div>
+    <div class="black-circle"></div>
+  </div>
+  <button onclick="saveTaichi()">下載圖片</button>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script>
+    function saveTaichi() {
+      const taichi = document.getElementById('taichi');
+      html2canvas(taichi).then(canvas => {
+        const link = document.createElement('a');
+        link.download = 'taichi.png';
+        link.href = canvas.toDataURL();
+        link.click();
+      });
+    }
+  </script>
+</body>
+</html>
